@@ -6,7 +6,7 @@ function MainRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path='/' element={<Dashboard />} />
+        <Route exact path='' element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

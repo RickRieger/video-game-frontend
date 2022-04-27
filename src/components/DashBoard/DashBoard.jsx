@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import Chart from 'react-google-charts';
 import {
   styled,
   alpha,
@@ -25,6 +27,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
+import randomColor from 'randomcolor';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -137,6 +140,69 @@ function DashboardContent({ children }) {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  
+  useEffect(() => {
+    getPlatformGlobalSales();
+  }, []);
+
+  const [consoleCollection, setConsoleCollection] = useState(null);
+
+  const getPlatformGlobalSales = async () => {
+
+  
+
+
+
+
+
+
+
+
+    console.log('It works!')
+    try{
+      const res = await axios.get('https://localhost:7260/api/Games/byPlatform-globalsales')
+      let data = res.data
+      let obj = {}
+      for(let i = 0; i < data.length; i++){
+      if(obj[data[i].platform]){
+      obj[data[i].platform] += data[i].globalSales
+        
+      }
+      else{
+      obj[data[i].platform] = data[i].globalSales
+        }
+      }
+      console.log(obj)
+      setConsoleCollection(obj)
+
+    }catch (e){
+      console.log(e)
+    }
+  };
+  //CHART DATA/OPTIONS  
+  const color = randomColor()
+  let data = [["Element", "Density", { role: "style" }]];
+  if (consoleCollection){
+    for (const console in consoleCollection){
+
+      data.push([console, parseInt(consoleCollection[console].toFixed(2)), randomColor()])
+      
+      
+      
+      
+    }; 
+    console.log(data) 
+  }
+    
+
+    
+    const options = {
+      title: 'Global Game Sales Per Console',
+      width: 1000,
+      height: 650,
+      bar: { groupWidth: '95%' },
+      legend: { position: 'none' },
+    };
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -210,34 +276,15 @@ function DashboardContent({ children }) {
           <Toolbar />
           <Container maxWidth='false' sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={4}>
-              {/* <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                ></Paper>
-              </Grid> */}
-              {/* Recent Deposits */}
-              {/* <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                ></Paper>
-              </Grid> */}
-              {/* Recent Orders */}
-              {/* <Grid item xs={12}>
-                <Paper
-                  sx={{ p: 2, display: 'flex', flexDirection: 'column' }}
-                ></Paper>
-              </Grid> */}
-              {children}
+         
+            <div>
+              <Chart
+              chartType="ColumnChart"
+              width="60vw"
+              height="60vh"
+              data={data}
+              options={options}/>
+              </div>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>

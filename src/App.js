@@ -3,13 +3,15 @@ import Dashboard from './components/DashBoard/DashBoard';
 import axios from 'axios';
 import { Chart } from 'react-google-charts';
 import MainRouter from './MainRouter';
+
+
 function App() {
   const [platforms, setPlatforms] = useState([]);
   const [globalSales, setGlobalSales] = useState([]);
 
   useEffect(() => {
-    // console.log(process.env.REACT_APP_AXIOS)
-    getAllVideoGames();
+    // getAllVideoGames();
+    
   }, []);
 
   const getAllVideoGames = async () => {
@@ -22,6 +24,8 @@ function App() {
       console.log(e);
     }
   };
+  
+ 
   // Data and options for bar chart to include global game sales per console
   const data = [[]];
   const options = {
@@ -40,3 +44,13 @@ function App() {
 }
 
 export default App;
+
+
+{/* <div>
+<Chart
+chartType="BarChart"
+width="100%"
+height="400px"
+data={data}
+options={options}/>
+</div> */}
