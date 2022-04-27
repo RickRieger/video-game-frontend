@@ -132,7 +132,7 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function DashboardContent({ children }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -208,10 +208,9 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
+          <Container maxWidth='false' sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={4}>
+              {/* <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
                     p: 2,
@@ -220,9 +219,9 @@ function DashboardContent() {
                     height: 240,
                   }}
                 ></Paper>
-              </Grid>
+              </Grid> */}
               {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
+              {/* <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
                     p: 2,
@@ -231,13 +230,14 @@ function DashboardContent() {
                     height: 240,
                   }}
                 ></Paper>
-              </Grid>
+              </Grid> */}
               {/* Recent Orders */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Paper
                   sx={{ p: 2, display: 'flex', flexDirection: 'column' }}
                 ></Paper>
-              </Grid>
+              </Grid> */}
+              {children}
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
