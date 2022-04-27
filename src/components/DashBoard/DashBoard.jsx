@@ -202,6 +202,7 @@ function DashboardContent({ children }) {
       height: 650,
       bar: { groupWidth: '95%' },
       legend: { position: 'none' },
+      margin: 'auto',
     };
 
   return (
@@ -228,7 +229,7 @@ function DashboardContent({ children }) {
               component='div'
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              MUI
+              Rick and Codi's Game Data
             </Typography>
             <Search>
               <SearchIconWrapper>
