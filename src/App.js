@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Chart } from 'react-google-charts';
+
 import MainRouter from './MainRouter';
 
 function App() {
@@ -22,15 +22,7 @@ function App() {
     }
   };
 
-  // Data and options for bar chart to include global game sales per console
-  const data = [[]];
-  const options = {
-    title: 'Global Game Sales Per Console',
-    width: 600,
-    height: 400,
-    bar: { groupWidth: '95%' },
-    legend: { position: 'none' },
-  };
+ 
 
   return (
     <div>
@@ -41,13 +33,3 @@ function App() {
 
 export default App;
 
-{
-  /* <div>
-<Chart
-chartType="BarChart"
-width="100%"
-height="400px"
-data={data}
-options={options}/>
-</div> */
-}

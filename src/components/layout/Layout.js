@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Chart from 'react-google-charts';
+
 import {
   styled,
   alpha,
@@ -141,55 +141,10 @@ function Layout({ children }) {
     setOpen(!open);
   };
 
-  useEffect(() => {
-    getPlatformGlobalSales();
-  }, []);
+  
 
-  const [consoleCollection, setConsoleCollection] = useState(null);
 
-  const getPlatformGlobalSales = async () => {
-    console.log('It works!');
-    try {
-      const res = await axios.get(
-        'https://localhost:7260/api/Games/byPlatform-globalsales'
-      );
-      let data = res.data;
-      let obj = {};
-      for (let i = 0; i < data.length; i++) {
-        if (obj[data[i].platform]) {
-          obj[data[i].platform] += data[i].globalSales;
-        } else {
-          obj[data[i].platform] = data[i].globalSales;
-        }
-      }
-      console.log(obj);
-      setConsoleCollection(obj);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  //CHART DATA/OPTIONS
-  const color = randomColor();
-  let data = [['Element', 'Density', { role: 'style' }]];
-  if (consoleCollection) {
-    for (const console in consoleCollection) {
-      data.push([
-        console,
-        parseInt(consoleCollection[console].toFixed(2)),
-        randomColor(),
-      ]);
-    }
-    console.log(data);
-  }
-
-  const options = {
-    title: 'Global Game Sales Per Console',
-    width: 1000,
-    height: 650,
-    bar: { groupWidth: '95%' },
-    legend: { position: 'none' },
-    margin: 'auto',
-  };
+  
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -263,14 +218,7 @@ function Layout({ children }) {
           <Toolbar />
           <Container maxWidth='false' sx={{ mt: 4, mb: 4 }} className='dude'>
             <Grid container spacing={4} sx={{ display: 'flex' }}>
-              {/* <div>
-              <Chart
-              chartType="ColumnChart"
-              width="60vw"
-              height="60vh"
-              data={data}
-              options={options}/>
-              </div> */}
+             
             </Grid>
             {children}
             <Copyright sx={{ pt: 4 }} />
@@ -354,14 +302,7 @@ export default Layout;
 //       <Toolbar />
 //       <Container maxWidth='false' sx={{ mt: 4, mb: 4 }}>
 //         <Grid container spacing={4}>
-//           {/* <div>
-//           <Chart
-//           chartType="ColumnChart"
-//           width="60vw"
-//           height="60vh"
-//           data={data}
-//           options={options}/>
-//           </div> */}
+//          
 //           {children}
 //         </Grid>
 //         <Copyright sx={{ pt: 4 }} />

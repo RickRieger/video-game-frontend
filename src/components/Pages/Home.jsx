@@ -2,29 +2,48 @@ import Layout from '../layout/Layout';
 import Grid from '@mui/material/Grid';
 import React, { useState, useEffect } from 'react';
 import { Paper } from '@mui/material';
+import OurCharts from '../layout/OurCharts';
+import axios from 'axios';
 function Home() {
-  useEffect(() => {
-    console.log('This Is Working!');
-  }, []);
+  const [consoleCollection, setConsoleCollection] = useState(null);
 
+
+
+  useEffect(() => {
+    getPlatformGlobalSales()
+  }, []);
+  
+
+  const getPlatformGlobalSales = async () => {
+    try {
+      const res = await axios.get(
+        'https://localhost:7260/api/Games/byPlatform-globalsales'
+      );
+      let data = res.data;
+      let obj = {};
+      for (let i = 0; i < data.length; i++) {
+        if (obj[data[i].platform]) {
+          obj[data[i].platform] += data[i].globalSales;
+        } else {
+          obj[data[i].platform] = data[i].globalSales;
+        }
+      }
+      console.log(obj);
+      setConsoleCollection(obj);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Layout>
-      <Grid item xs={12} md={12} lg={12} style={{ zIndex: '100' }}>
-        <Grid item xs={12} md={12} lg={12}>
-          <Paper
-            sx={{
-              p: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'scroll',
-            }}
-          >
-            <h1>hello man</h1>
-            <h2>omg</h2>
-            <h3>well then</h3>
-          </Paper>
-        </Grid>
-      </Grid>
+     
+        
+          
+      
+      <OurCharts consoleCollection={consoleCollection}/>
+         
+          
+        
     </Layout>
   );
 }
