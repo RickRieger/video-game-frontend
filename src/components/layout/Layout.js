@@ -140,13 +140,7 @@ function Layout({ children }) {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const handleOnChange(e)=>{
-    
-  console.log(e)
-  }
-  const handleOnSubmit(e) => {
-
-  }
+ 
   
 
 
@@ -185,8 +179,7 @@ function Layout({ children }) {
               <StyledInputBase
                 placeholder='Search…'
                 inputProps={{ 'aria-label': 'search' }}
-                onChange={handleOnChange}
-                onSubmit={handleOnSubmit}
+               
               />
             </Search>
           </Toolbar>
