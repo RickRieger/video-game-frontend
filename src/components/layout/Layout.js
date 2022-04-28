@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Chart from 'react-google-charts';
 import {
@@ -135,12 +135,12 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-function DashboardContent({ children }) {
+function Layout({ children }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  
+
   useEffect(() => {
     getPlatformGlobalSales();
   }, []);
@@ -148,62 +148,48 @@ function DashboardContent({ children }) {
   const [consoleCollection, setConsoleCollection] = useState(null);
 
   const getPlatformGlobalSales = async () => {
-
-  
-
-
-
-
-
-
-
-
-    console.log('It works!')
-    try{
-      const res = await axios.get('https://localhost:7260/api/Games/byPlatform-globalsales')
-      let data = res.data
-      let obj = {}
-      for(let i = 0; i < data.length; i++){
-      if(obj[data[i].platform]){
-      obj[data[i].platform] += data[i].globalSales
-        
-      }
-      else{
-      obj[data[i].platform] = data[i].globalSales
+    console.log('It works!');
+    try {
+      const res = await axios.get(
+        'https://localhost:7260/api/Games/byPlatform-globalsales'
+      );
+      let data = res.data;
+      let obj = {};
+      for (let i = 0; i < data.length; i++) {
+        if (obj[data[i].platform]) {
+          obj[data[i].platform] += data[i].globalSales;
+        } else {
+          obj[data[i].platform] = data[i].globalSales;
         }
       }
-      console.log(obj)
-      setConsoleCollection(obj)
-
-    }catch (e){
-      console.log(e)
+      console.log(obj);
+      setConsoleCollection(obj);
+    } catch (e) {
+      console.log(e);
     }
   };
-  //CHART DATA/OPTIONS  
-  const color = randomColor()
-  let data = [["Element", "Density", { role: "style" }]];
-  if (consoleCollection){
-    for (const console in consoleCollection){
-
-      data.push([console, parseInt(consoleCollection[console].toFixed(2)), randomColor()])
-      
-      
-      
-      
-    }; 
-    console.log(data) 
+  //CHART DATA/OPTIONS
+  const color = randomColor();
+  let data = [['Element', 'Density', { role: 'style' }]];
+  if (consoleCollection) {
+    for (const console in consoleCollection) {
+      data.push([
+        console,
+        parseInt(consoleCollection[console].toFixed(2)),
+        randomColor(),
+      ]);
+    }
+    console.log(data);
   }
-    
 
-    
-    const options = {
-      title: 'Global Game Sales Per Console',
-      width: 1000,
-      height: 650,
-      bar: { groupWidth: '95%' },
-      legend: { position: 'none' },
-      margin: 'auto',
-    };
+  const options = {
+    title: 'Global Game Sales Per Console',
+    width: 1000,
+    height: 650,
+    bar: { groupWidth: '95%' },
+    legend: { position: 'none' },
+    margin: 'auto',
+  };
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -275,18 +261,18 @@ function DashboardContent({ children }) {
           }}
         >
           <Toolbar />
-          <Container maxWidth='false' sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={4}>
-         
-            <div>
+          <Container maxWidth='false' sx={{ mt: 4, mb: 4 }} className='dude'>
+            <Grid container spacing={4} sx={{ display: 'flex' }}>
+              {/* <div>
               <Chart
               chartType="ColumnChart"
               width="60vw"
               height="60vh"
               data={data}
               options={options}/>
-              </div>
+              </div> */}
             </Grid>
+            {children}
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
@@ -295,6 +281,91 @@ function DashboardContent({ children }) {
   );
 }
 
-export default function Dashboard() {
-  return <DashboardContent />;
-}
+export default Layout;
+
+// <ThemeProvider theme={mdTheme}>
+//   <Box sx={{ display: 'flex' }}>
+//     <CssBaseline />
+//     <AppBar position='absolute' open={open}>
+//       <Toolbar>
+//         <IconButton
+//           edge='start'
+//           color='inherit'
+//           aria-label='open drawer'
+//           onClick={toggleDrawer}
+//           sx={{
+//             marginRight: '36px',
+//             ...(open && { display: 'none' }),
+//           }}
+//         >
+//           <MenuIcon />
+//         </IconButton>
+//         <Typography
+//           variant='h6'
+//           noWrap
+//           component='div'
+//           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+//         >
+//           Rick and Codi's Game Data
+//         </Typography>
+//         <Search>
+//           <SearchIconWrapper>
+//             <SearchIcon />
+//           </SearchIconWrapper>
+//           <StyledInputBase
+//             placeholder='Search…'
+//             inputProps={{ 'aria-label': 'search' }}
+//           />
+//         </Search>
+//       </Toolbar>
+//     </AppBar>
+//     <Drawer variant='permanent' open={open}>
+//       <Toolbar
+//         sx={{
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'flex-end',
+//           px: [1],
+//         }}
+//       >
+//         <IconButton onClick={toggleDrawer}>
+//           <ChevronLeftIcon />
+//         </IconButton>
+//       </Toolbar>
+//       <Divider />
+//       <List component='nav'>
+//         {mainListItems}
+//         <Divider sx={{ my: 1 }} />
+//         {secondaryListItems}
+//       </List>
+//     </Drawer>
+//     <Box
+//       component='main'
+//       sx={{
+//         backgroundColor: (theme) =>
+//           theme.palette.mode === 'light'
+//             ? theme.palette.grey[100]
+//             : theme.palette.grey[900],
+//         flexGrow: 1,
+//         height: '100vh',
+//         overflow: 'auto',
+//       }}
+//     >
+//       <Toolbar />
+//       <Container maxWidth='false' sx={{ mt: 4, mb: 4 }}>
+//         <Grid container spacing={4}>
+//           {/* <div>
+//           <Chart
+//           chartType="ColumnChart"
+//           width="60vw"
+//           height="60vh"
+//           data={data}
+//           options={options}/>
+//           </div> */}
+//           {children}
+//         </Grid>
+//         <Copyright sx={{ pt: 4 }} />
+//       </Container>
+//     </Box>
+//   </Box>
+// </ThemeProvider>
