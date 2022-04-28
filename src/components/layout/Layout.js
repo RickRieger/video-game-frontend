@@ -140,9 +140,34 @@ function Layout({ children }) {
   const toggleDrawer = () => {
     setOpen(!open);
   };
- 
-  
 
+
+  const [userInput, setUserInput] = useState('');
+  const handleOnChange=(e)=>{
+   setUserInput(e.target.value) 
+    
+  }
+
+  const handleOnSubmit=(e) => {
+    if (e.key === 'Enter' && e.target.value.length()<0){
+      getGamesByUserInput(e.target.value)
+      console.log(e.target.value)
+    }
+    else {
+      alert('You need to enter more info')
+    }
+
+  }
+  const getGamesByUserInput = async () => {
+    try {
+      const res = await axios.get(
+        `https://localhost:7260/api/Games/searchByTitle/${userInput}`
+      );
+  
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   
 
@@ -173,13 +198,15 @@ function Layout({ children }) {
               Rick and Codi's Game Data
             </Typography>
             <Search>
-              <SearchIconWrapper>
+              <SearchIconWrapper >
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder='Search…'
                 inputProps={{ 'aria-label': 'search' }}
-               
+                onChange={(e)=>handleOnChange(e)}
+                onKeyPress={(e) => handleOnSubmit(e)}
+                value={userInput}
               />
             </Search>
           </Toolbar>

@@ -26,7 +26,7 @@ function OurCharts(props) {
    margin: 'auto',
  };
 
-debugger;
+
 console.log('=>',props.consoleCollection)
 
 
