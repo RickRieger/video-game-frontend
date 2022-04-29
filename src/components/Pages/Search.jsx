@@ -1,65 +1,81 @@
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
+import axios from 'axios';
+import { Chart } from 'react-google-charts';
 import Layout from '../layout/Layout';
 import Grid from '@mui/material/Grid';
-import React, { useState, useEffect } from 'react';
 import { Paper } from '@mui/material';
-import ColumnChart from '../layout/ColumnChart';
-import axios from 'axios';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 import SearchResults from '../layout/SearchResults';
+import { Copyright } from '@mui/icons-material';
 import moment from 'moment';
-function Home() {
-  const [consoleCollection, setConsoleCollection] = useState(null);
+import { useParams } from 'react-router-dom';
+const Search = () => {
+  const [resultsFromQuery, setResultsFromQuery] = useState(null);
+  const params = useParams();
+  let query = params.query;
+
+  if (query) {
+    query = query.replace(' ', '%20');
+  }
+  console.log(query);
 
   useEffect(() => {
-    // getPlatformGlobalSales();
+    getAllGamesFromQuery();
   }, []);
+
+  const getAllGamesFromQuery = async () => {
+    console.log('+++++=====>', params);
+    // try {
+    //   const res = await axios.get(
+    //     `https://localhost:7260/api/Games/searchByTitle/${query}`
+    //   );
+    //   console.log(res.data);
+    //   setResultsFromQuery(res.data);
+    // } catch (e) {
+    //   console.log(e.message);
+    // }
+  };
+
+  // for clock and date
   const update = () => {
     document.getElementById('datetime').innerHTML = moment().format(
       'MMMM Do YYYY, h:mm:ss a'
     );
   };
   setInterval(update, 1000);
-  const getPlatformGlobalSales = async () => {
-    try {
-      const res = await axios.get(
-        'https://localhost:7260/api/Games/byPlatform-globalsales'
-      );
-      let data = res.data;
-      let obj = {};
-      for (let i = 0; i < data.length; i++) {
-        if (obj[data[i].platform]) {
-          obj[data[i].platform] += data[i].globalSales;
-        } else {
-          obj[data[i].platform] = data[i].globalSales;
-        }
-      }
-      console.log(obj);
-      setConsoleCollection(obj);
-    } catch (e) {
-      console.log(e);
-    }
+
+  // for chart
+  const data = [
+    [
+      'Element',
+      'Density',
+      { role: 'style' },
+      {
+        sourceColumn: 0,
+        role: 'annotation',
+        type: 'string',
+        calc: 'stringify',
+      },
+    ],
+    ['Copper', 8.94, '#b87333', null],
+    ['Silver', 10.49, 'silver', null],
+    ['Gold', 19.3, 'gold', null],
+    ['Platinum', 21.45, 'color: #e5e4e2', null],
+  ];
+  const options = {
+    chart: {
+      title: 'Density of Precious Metals, in g/cm^3',
+      width: 600,
+      height: 400,
+      bar: { groupWidth: '95%' },
+      legend: { position: 'none' },
+    },
   };
-  function Copyright(props) {
-    return (
-      <Typography
-        variant='body2'
-        color='text.secondary'
-        align='center'
-        {...props}
-      >
-        {'Copyright © '}
-        <Link color='inherit' href='https://mui.com/'>
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
+
+  // RENDER STUFF!
   return (
     <Layout>
       <Box
@@ -88,7 +104,14 @@ function Home() {
                   height: 500,
                 }}
               >
-                <ColumnChart consoleCollection={consoleCollection} />
+                {' '}
+                <Chart
+                  chartType='BarChart'
+                  width='100%'
+                  height='400px'
+                  data={data}
+                  options={options}
+                />{' '}
               </Paper>
             </Grid>
             {/* Recent Deposits */}
@@ -126,6 +149,6 @@ function Home() {
       </Box>
     </Layout>
   );
-}
+};
 
-export default Home;
+export default Search;

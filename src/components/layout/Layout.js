@@ -13,9 +13,12 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { mainListItems, secondaryListItems } from './listItems';
+import MainListItems from './MainListItems';
+import SecondaryListItems from './SecondaryListItems';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
+import { useNavigate } from 'react-router-dom';
+import { Params } from 'react-router-dom';
 import {
   styled,
   alpha,
@@ -112,12 +115,23 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const mdTheme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1a237e',
+    },
+    secondary: {
+      main: '#f57f17',
+    },
+  },
+});
 
 function Layout({ children }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const navigate = useNavigate();
 
   const [userInput, setUserInput] = useState('');
   const handleOnChange = (e) => {
@@ -125,25 +139,26 @@ function Layout({ children }) {
   };
 
   const handleOnSubmit = (e) => {
-    if (e.key === 'Enter' && e.target.value.length() < 0) {
-      getGamesByUserInput(e.target.value);
-      console.log(e.target.value);
-    } else {
-      alert('You need to enter more info');
+    if (e.key === 'Enter') {
+      if (e.target.value.length < 3) {
+        alert('You need to enter more info');
+      }
+
+      navigate(`/search/${e.target.value}`);
     }
   };
-  const getGamesByUserInput = async () => {
-    try {
-      const res = await axios.get(
-        `https://localhost:7260/api/Games/searchByTitle/${userInput}`
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const getGamesByUserInput = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `https://localhost:7260/api/Games/searchByTitle/${userInput}`
+  //     );
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar
@@ -168,9 +183,12 @@ function Layout({ children }) {
               variant='h6'
               noWrap
               component='div'
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'none', sm: 'block' },
+              }}
             >
-              Rick and Codi's Game Data
+              Rick & Codi
             </Typography>
             <Search>
               <SearchIconWrapper>
@@ -201,12 +219,13 @@ function Layout({ children }) {
           </Toolbar>
           <Divider />
           <List component='nav'>
-            {mainListItems}
+            <MainListItems />
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            <SecondaryListItems />
           </List>
         </Drawer>
         <Box
+          style={{ backgroundColor: 'grey' }}
           component='main'
           sx={{
             backgroundColor: (theme) =>
