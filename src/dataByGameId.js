@@ -1,4 +1,4 @@
-const data = [
+export const dataByGameId = [
   {
     id: 3,
     rank: 17,

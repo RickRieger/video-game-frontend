@@ -2,7 +2,7 @@ import Layout from '../layout/Layout';
 import Grid from '@mui/material/Grid';
 import React, { useState, useEffect } from 'react';
 import { Paper } from '@mui/material';
-import ColumnChart from '../layout/ColumnChart';
+import GoogleCharts from '../layout/GoogleCharts';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,23 +10,36 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import SearchResults from '../layout/SearchResults';
-import moment from 'moment';
-function Home() {
+import DateAndTime from '../layout/DateAndTime';
+import { dataByPlatformGlobalSales } from '../../dataByPlatformGlobalSales';
+import { dataByGameId } from '../../dataByGameId';
+const Home = () => {
+  useEffect(() => {
+    getPlatformGlobalSales();
+  }, []);
+
   const [consoleCollection, setConsoleCollection] = useState(null);
 
-  useEffect(() => {
-    // getPlatformGlobalSales();
-  }, []);
-  const clock = () => {
-    return moment().format('MMMM Do YYYY, h:mm:ss a');
+  // Column Google Chart Starter Code
+  let dataToBeDisplayed = [['Name', 'Sales', { role: 'style' }]];
+  const chartOptions = {
+    title: 'Global Game Sales Per Console in millions $',
+    width: '100%',
+    height: '100%',
+    bar: { groupWidth: '95%' },
+    legend: { position: 'none' },
+    margin: 'auto',
   };
-  // setInterval(clock, 1000);
+
   const getPlatformGlobalSales = async () => {
     try {
-      const res = await axios.get(
-        'https://localhost:7260/api/Games/byPlatform-globalsales'
-      );
-      let data = res.data;
+      // const res = await axios.get(
+      //   'https://localhost:7260/api/Games/byPlatform-globalsales'
+      // );
+
+      let data = dataByPlatformGlobalSales;
+      // let data = res.data;
+      console.log(dataByPlatformGlobalSales);
       let obj = {};
       for (let i = 0; i < data.length; i++) {
         if (obj[data[i].platform]) {
@@ -41,6 +54,7 @@ function Home() {
       console.log(e);
     }
   };
+
   function Copyright(props) {
     return (
       <Typography
@@ -58,6 +72,7 @@ function Home() {
       </Typography>
     );
   }
+
   return (
     <Layout>
       <Box
@@ -86,7 +101,12 @@ function Home() {
                   height: 500,
                 }}
               >
-                <ColumnChart consoleCollection={consoleCollection} />
+                <GoogleCharts
+                  consoleCollection={consoleCollection}
+                  chartOptions={chartOptions}
+                  dataToBeDisplayed={dataToBeDisplayed}
+                  chartType='ColumnChart'
+                />
               </Paper>
             </Grid>
             {/* Recent Deposits */}
@@ -108,16 +128,14 @@ function Home() {
                     objectFit: 'contain',
                   }}
                 />
-                <h2 id='datetime' style={{ textAlign: 'center' }}>
-                  {clock}
-                </h2>
+                <DateAndTime />
                 {/* <Deposits /> */}
               </Paper>
             </Grid>
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <SearchResults />
+                <SearchResults data={dataByGameId} />
               </Paper>
             </Grid>
           </Grid>
@@ -126,6 +144,6 @@ function Home() {
       </Box>
     </Layout>
   );
-}
+};
 
 export default Home;

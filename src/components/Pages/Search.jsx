@@ -12,23 +12,35 @@ import SearchResults from '../layout/SearchResults';
 import { Copyright } from '@mui/icons-material';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import randomColor from 'randomcolor';
+import DateAndTime from '../layout/DateAndTime';
 const Search = () => {
-  const [timeAndDate, setTimeAndDate] = useState(null);
-  let chartData = [
-    [
-      'Element',
-      'Rank',
-      { role: 'style' },
-      {
-        sourceColumn: 0,
-        role: 'annotation',
-        type: 'string',
-        calc: 'stringify',
-      },
-    ],
-  ];
-  const fakeDataFromSearch = [
+  const [resultsFromQuery, setResultsFromQuery] = useState(null);
+  const params = useParams();
+  let query = params.query;
+
+  if (query) {
+    query = query.replace(' ', '%20');
+  }
+  console.log(query);
+
+  useEffect(() => {
+    getAllGamesFromQuery();
+  }, []);
+
+  const getAllGamesFromQuery = async () => {
+    console.log('+++++=====>', params);
+    // try {
+    //   const res = await axios.get(
+    //     `https://localhost:7260/api/Games/searchByTitle/${query}`
+    //   );
+    //   console.log(res.data);
+    //   setResultsFromQuery(res.data);
+    // } catch (e) {
+    //   console.log(e.message);
+    // }
+  };
+
+  const dataFromPostMan = [
     {
       id: 3,
       rank: 17,
@@ -423,45 +435,6 @@ const Search = () => {
     },
   ];
 
-  fakeDataFromSearch.forEach((data) => {
-    const color = randomColor();
-    let x = [data.name, data.rank, color, null];
-    chartData.push(x);
-  });
-
-  const [resultsFromQuery, setResultsFromQuery] = useState(null);
-  const params = useParams();
-  let query = params.query;
-
-  if (query) {
-    query = query.replace(' ', '%20');
-  }
-  console.log(query);
-
-  useEffect(() => {
-    getAllGamesFromQuery();
-  }, []);
-
-  const getAllGamesFromQuery = async () => {
-    console.log('=====>', params);
-    // try {
-    //   const res = await axios.get(
-    //     `https://localhost:7260/api/Games/searchByTitle/${query}`
-    //   );
-    //   console.log(res.data);
-    //   setResultsFromQuery(res.data);
-
-    // } catch (e) {
-    //   console.log(e.message);
-    // }
-  };
-
-  // for clock and date
-
-  const clock = () => {
-    setTimeAndDate(moment().format('MMMM Do YYYY, h:mm:ss a'));
-  };
-  setInterval(clock, 1000);
   // for chart
   const data = [
     [
@@ -524,7 +497,7 @@ const Search = () => {
                   chartType='BarChart'
                   width='100%'
                   height='400px'
-                  data={chartData}
+                  data={data}
                   options={options}
                 />{' '}
               </Paper>
@@ -548,16 +521,14 @@ const Search = () => {
                     objectFit: 'contain',
                   }}
                 />
-                <h2 id='datetime' style={{ textAlign: 'center' }}>
-                  {timeAndDate}
-                </h2>
+                <DateAndTime />
                 {/* <Deposits /> */}
               </Paper>
             </Grid>
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <SearchResults data={fakeDataFromSearch} />
+                <SearchResults data={dataFromPostMan} />
               </Paper>
             </Grid>
           </Grid>

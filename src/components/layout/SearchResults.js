@@ -9,8 +9,15 @@ import TableRow from '@mui/material/TableRow';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import { Button } from '@mui/material';
 // Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
+function createData(
+  id,
+  title,
+  releaseYear,
+  platform,
+  publisher,
+  viewGameStats
+) {
+  return { id, title, releaseYear, platform, publisher, viewGameStats };
 }
 let rows = [];
 // const rows = [
@@ -63,8 +70,8 @@ function preventDefault(event) {
 const SearchResults = ({ data }) => {
   data.forEach((element, index) => {
     let x = createData(
-      element.index,
-      element.title,
+      index,
+      element.name,
       element.platform,
       element.year,
       element.publisher
@@ -86,10 +93,10 @@ const SearchResults = ({ data }) => {
         <TableBody>
           {rows.map((row, index) => (
             <TableRow key={index}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
+              <TableCell>{row.title}</TableCell>
+              <TableCell>{row.releaseYear}</TableCell>
+              <TableCell>{row.platform}</TableCell>
+              <TableCell>{row.publisher}</TableCell>
               <TableCell align='right'>
                 <VideogameAssetIcon
                   style={{ color: 'blue', fontSize: 'large' }}
