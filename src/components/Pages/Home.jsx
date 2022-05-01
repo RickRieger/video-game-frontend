@@ -48,7 +48,6 @@ const Home = () => {
           obj[data[i].platform] = data[i].globalSales;
         }
       }
-      console.log(obj);
       setConsoleCollection(obj);
     } catch (e) {
       console.log(e);
@@ -72,7 +71,7 @@ const Home = () => {
       </Typography>
     );
   }
-
+  console.log('dataToBeDisplayed==>', dataToBeDisplayed);
   return (
     <Layout>
       <Box
@@ -101,12 +100,16 @@ const Home = () => {
                   height: 500,
                 }}
               >
-                <GoogleCharts
-                  consoleCollection={consoleCollection}
-                  chartOptions={chartOptions}
-                  dataToBeDisplayed={dataToBeDisplayed}
-                  chartType='ColumnChart'
-                />
+                {consoleCollection ? (
+                  <GoogleCharts
+                    consoleCollection={consoleCollection}
+                    chartOptions={chartOptions}
+                    dataToBeDisplayed={dataToBeDisplayed}
+                    chartType='ColumnChart'
+                  />
+                ) : (
+                  ''
+                )}
               </Paper>
             </Grid>
             {/* Recent Deposits */}

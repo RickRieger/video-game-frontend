@@ -459,14 +459,14 @@ const PopularGames = () => {
                   height: 500,
                 }}
               >
-                {' '}
+                {/* {' '}
                 <Chart
                   chartType='Line'
                   width='100%'
                   height='400px'
                   data={data}
                   options={options}
-                />{' '}
+                />{' '} */}
               </Paper>
             </Grid>
             {/* Recent Deposits */}

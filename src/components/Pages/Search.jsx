@@ -492,14 +492,14 @@ const Search = () => {
                   height: 500,
                 }}
               >
-                {' '}
+                {/* {' '}
                 <Chart
                   chartType='BarChart'
                   width='100%'
                   height='400px'
                   data={data}
                   options={options}
-                />{' '}
+                />{' '} */}
               </Paper>
             </Grid>
             {/* Recent Deposits */}
