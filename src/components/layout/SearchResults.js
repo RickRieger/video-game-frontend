@@ -63,11 +63,9 @@ let rows = [];
 //   ),
 // ];
 
-function preventDefault(event) {
-  event.preventDefault();
-}
 
-const SearchResults = ({ data }) => {
+
+if (data){const SearchResults = ({ data }) => {
   data.forEach((element, index) => {
     let x = createData(
       index,
@@ -78,6 +76,8 @@ const SearchResults = ({ data }) => {
     );
     rows.push(x);
   });
+}
+
   return (
     <React.Fragment>
       <Table size='small'>

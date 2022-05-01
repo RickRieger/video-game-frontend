@@ -13,6 +13,7 @@ import SearchResults from '../layout/SearchResults';
 import DateAndTime from '../layout/DateAndTime';
 import { dataByPlatformGlobalSales } from '../../dataByPlatformGlobalSales';
 import { dataByGameId } from '../../dataByGameId';
+import randomColor from 'randomcolor';
 const Home = () => {
   useEffect(() => {
     getPlatformGlobalSales();
@@ -31,15 +32,30 @@ const Home = () => {
     margin: 'auto',
   };
 
+  if (consoleCollection) {
+    for (const key in consoleCollection) {
+      // num += 1;
+      // console.log(num);
+      // console.log(element);
+      // console.log(collection[element]);
+      // let x = randomColor();
+      // console.log(x);
+      let color = randomColor();
+      let x = [key, consoleCollection[key], color];
+      dataToBeDisplayed.push(x);
+
+      }
+    }
+
   const getPlatformGlobalSales = async () => {
     try {
-      // const res = await axios.get(
-      //   'https://localhost:7260/api/Games/byPlatform-globalsales'
-      // );
+      const res = await axios.get(
+        'https://localhost:7260/api/Games/byPlatform-globalsales'
+      );
 
-      let data = dataByPlatformGlobalSales;
-      // let data = res.data;
-      console.log(dataByPlatformGlobalSales);
+      // let data = dataByPlatformGlobalSales;
+      let data = res.data;
+      // console.log(dataByPlatformGlobalSales);
       let obj = {};
       for (let i = 0; i < data.length; i++) {
         if (obj[data[i].platform]) {
@@ -102,7 +118,7 @@ const Home = () => {
               >
                 {consoleCollection ? (
                   <GoogleCharts
-                    consoleCollection={consoleCollection}
+                    
                     chartOptions={chartOptions}
                     dataToBeDisplayed={dataToBeDisplayed}
                     chartType='ColumnChart'
