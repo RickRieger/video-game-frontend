@@ -63,20 +63,23 @@ let rows = [];
 //   ),
 // ];
 
-
-
-if (data){const SearchResults = ({ data }) => {
-  data.forEach((element, index) => {
-    let x = createData(
-      index,
-      element.name,
-      element.platform,
-      element.year,
-      element.publisher
-    );
-    rows.push(x);
-  });
+function preventDefault(event) {
+  event.preventDefault();
 }
+
+const SearchResults = ({ data }) => {
+  if (data) {
+    data.forEach((element, index) => {
+      let x = createData(
+        index,
+        element.name,
+        element.platform,
+        element.year,
+        element.publisher
+      );
+      rows.push(x);
+    });
+  }
 
   return (
     <React.Fragment>
