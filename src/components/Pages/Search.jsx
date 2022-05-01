@@ -8,7 +8,7 @@ import { Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-import SearchResults from '../layout/SearchResults';
+import Table from '../layout/Table';
 import { Copyright } from '@mui/icons-material';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
@@ -28,7 +28,6 @@ const Search = () => {
   }, []);
 
   const getAllGamesFromQuery = async () => {
-    
     try {
       const res = await axios.get(
         `https://localhost:7260/api/Games/searchByTitle/${query}`
@@ -39,9 +38,7 @@ const Search = () => {
       console.log(e.message);
     }
   };
-  console.log(resultsFromQuery)
-
- 
+  console.log(resultsFromQuery);
 
   // for chart
   const data = [
@@ -136,7 +133,7 @@ const Search = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <SearchResults data={resultsFromQuery} />
+                <Table data={resultsFromQuery} />
               </Paper>
             </Grid>
           </Grid>

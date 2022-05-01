@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import SearchResults from '../layout/SearchResults';
+import Table from '../layout/Table';
 import DateAndTime from '../layout/DateAndTime';
 import { dataByPlatformGlobalSales } from '../../dataByPlatformGlobalSales';
 import { dataByGameId } from '../../dataByGameId';
@@ -43,9 +43,8 @@ const Home = () => {
       let color = randomColor();
       let x = [key, consoleCollection[key], color];
       dataToBeDisplayed.push(x);
-
-      }
     }
+  }
 
   const getPlatformGlobalSales = async () => {
     try {
@@ -118,7 +117,6 @@ const Home = () => {
               >
                 {consoleCollection ? (
                   <GoogleCharts
-                    
                     chartOptions={chartOptions}
                     dataToBeDisplayed={dataToBeDisplayed}
                     chartType='ColumnChart'
@@ -154,7 +152,7 @@ const Home = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <SearchResults data={dataByGameId} />
+                <Table data={dataByGameId} />
               </Paper>
             </Grid>
           </Grid>
