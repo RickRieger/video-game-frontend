@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
+import randomColor from 'randomColor';
 // Generates Order of Data for the table
 function createData(
   id,
@@ -22,10 +23,9 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-const MuiTable = ({ data }) => {
-  let rows =[]
+const MuiTable = ({ data, setChartOptions, setDataToBeDisplayed }) => {
+  let rows = [];
   if (data) {
-  
     data.forEach((element, index) => {
       let x = createData(
         index,
@@ -37,6 +37,29 @@ const MuiTable = ({ data }) => {
       rows.push(x);
     });
   }
+
+  const handleUpdateChart = async (nameOfGame) => {
+    try {
+      const res = await axios.get(
+        `https://localhost:7260/api/Games/byNameOfGame${nameOfGame}`
+      );
+      console.log(res.data);
+      let data = res.data;
+      let x = ['Game', 'GloabalSalesByConsole', { role: 'style' }];
+      let obj = {};
+      for (let i = 0; i < data.length; i++) {
+        if (obj[data[i].platform]) {
+          obj[data[i].platform] += data[i].globalSales;
+        } else {
+          obj[data[i].platform] = data[i].globalSales;
+        }
+      }
+      setChartOptions();
+      setDataToBeDisplayed();
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -60,7 +83,7 @@ const MuiTable = ({ data }) => {
               <TableCell align='right'>
                 <VideogameAssetIcon
                   style={{ color: 'blue', fontSize: 'large' }}
-                  onClick={() => console.log('onClick works===>', row.id)}
+                  onClick={() => handleUpdateChart(row.title)}
                 />
               </TableCell>
             </TableRow>

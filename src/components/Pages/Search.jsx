@@ -16,7 +16,19 @@ import DateAndTime from '../layout/DateAndTime';
 import randomColor from 'randomcolor';
 const Search = () => {
   const [resultsFromQuery, setResultsFromQuery] = useState(null);
-  const [consoleCollection,setConsoleCollection] = useState(null);
+  const [consoleCollection, setConsoleCollection] = useState(null);
+  const [chartOptions, setChartOptions] = useState({
+    title: 'Global Game Sales Per Console in millions $',
+    width: '100%',
+    height: '100%',
+    bar: { groupWidth: '95%' },
+    legend: { position: 'none' },
+    margin: 'auto',
+  });
+  let [dataToBeDisplayed, setDataToBeDisplayed] = useState([
+    ['Name', 'Sales', { role: 'style' }],
+  ]);
+
   const params = useParams();
   let query = params.query;
 
@@ -48,10 +60,7 @@ const Search = () => {
       const res = await axios.get(
         'https://localhost:7260/api/Games/byPlatform-globalsales'
       );
-
-      // let data = dataByPlatformGlobalSales;
       let data = res.data;
-      // console.log(dataByPlatformGlobalSales);
       let obj = {};
       for (let i = 0; i < data.length; i++) {
         if (obj[data[i].platform]) {
@@ -65,15 +74,7 @@ const Search = () => {
       console.log(e);
     }
   };
-  let dataToBeDisplayed = [['Name', 'Sales', { role: 'style' }]];
-  const chartOptions = {
-    title: 'Global Game Sales Per Console in millions $',
-    width: '100%',
-    height: '100%',
-    bar: { groupWidth: '95%' },
-    legend: { position: 'none' },
-    margin: 'auto',
-  };
+
   if (consoleCollection) {
     for (const key in consoleCollection) {
       let color = randomColor();
@@ -173,7 +174,11 @@ const Search = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <MuiTable data={resultsFromQuery} />
+                <MuiTable
+                  data={resultsFromQuery}
+                  setChartOptions={setChartOptions}
+                  setDataToBeDisplayed={setDataToBeDisplayed}
+                />
               </Paper>
             </Grid>
           </Grid>
