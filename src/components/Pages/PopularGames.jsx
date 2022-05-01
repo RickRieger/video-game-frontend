@@ -14,12 +14,10 @@ import SearchResults from '../layout/SearchResults';
 import { Copyright } from '@mui/icons-material';
 import moment from 'moment';
 const PopularGames = () => {
-  const update = () => {
-    document.getElementById('datetime').innerHTML = moment().format(
-      'MMMM Do YYYY, h:mm:ss a'
-    );
+  const clock = () => {
+    return moment().format('MMMM Do YYYY, h:mm:ss a');
   };
-  setInterval(update, 1000);
+  // setInterval(clock, 1000);
   const data = [
     ['Year', 'Mario Bros', 'James Bond', 'StarCraft'],
     [1, 37.8, 80.8, 41.8],
@@ -100,7 +98,9 @@ const PopularGames = () => {
                     objectFit: 'contain',
                   }}
                 />
-                <h2 id='datetime' style={{ textAlign: 'center' }}></h2>
+                <h2 id='datetime' style={{ textAlign: 'center' }}>
+                  {clock}
+                </h2>
                 {/* <Deposits /> */}
               </Paper>
             </Grid>

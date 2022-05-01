@@ -17,12 +17,10 @@ function Home() {
   useEffect(() => {
     // getPlatformGlobalSales();
   }, []);
-  const update = () => {
-    document.getElementById('datetime').innerHTML = moment().format(
-      'MMMM Do YYYY, h:mm:ss a'
-    );
+  const clock = () => {
+    return moment().format('MMMM Do YYYY, h:mm:ss a');
   };
-  setInterval(update, 1000);
+  // setInterval(clock, 1000);
   const getPlatformGlobalSales = async () => {
     try {
       const res = await axios.get(
@@ -110,7 +108,9 @@ function Home() {
                     objectFit: 'contain',
                   }}
                 />
-                <h2 id='datetime' style={{ textAlign: 'center' }}></h2>
+                <h2 id='datetime' style={{ textAlign: 'center' }}>
+                  {clock}
+                </h2>
                 {/* <Deposits /> */}
               </Paper>
             </Grid>
