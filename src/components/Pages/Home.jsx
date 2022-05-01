@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import Table from '../layout/Table';
+import MuiTable from '../layout/Table';
 import DateAndTime from '../layout/DateAndTime';
 import { dataByPlatformGlobalSales } from '../../dataByPlatformGlobalSales';
 import { dataByGameId } from '../../dataByGameId';
@@ -34,12 +34,6 @@ const Home = () => {
 
   if (consoleCollection) {
     for (const key in consoleCollection) {
-      // num += 1;
-      // console.log(num);
-      // console.log(element);
-      // console.log(collection[element]);
-      // let x = randomColor();
-      // console.log(x);
       let color = randomColor();
       let x = [key, consoleCollection[key], color];
       dataToBeDisplayed.push(x);
@@ -152,7 +146,7 @@ const Home = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Table data={dataByGameId} />
+                <MuiTable data={dataByGameId} />
               </Paper>
             </Grid>
           </Grid>

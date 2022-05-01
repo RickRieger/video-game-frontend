@@ -10,7 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import Table from '../layout/Table';
+import MuiTable from '../layout/Table';
 import { Copyright } from '@mui/icons-material';
 import DateAndTime from '../layout/DateAndTime';
 const PopularGames = () => {
@@ -495,7 +495,7 @@ const PopularGames = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Table data={dataFromPostMan} />
+                <MuiTable data={dataFromPostMan} />
               </Paper>
             </Grid>
           </Grid>

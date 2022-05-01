@@ -22,8 +22,10 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-const Table = ({ data }) => {
+const MuiTable = ({ data }) => {
+  let rows =[]
   if (data) {
+  
     data.forEach((element, index) => {
       let x = createData(
         index,
@@ -72,4 +74,4 @@ const Table = ({ data }) => {
   );
 };
 
-export default Table;
+export default MuiTable;

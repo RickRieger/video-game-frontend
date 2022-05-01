@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import axios from 'axios';
-import { Chart } from 'react-google-charts';
+import GoogleCharts from '../layout/GoogleCharts';
 import Layout from '../layout/Layout';
 import Grid from '@mui/material/Grid';
 import { Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-import Table from '../layout/Table';
+import MuiTable from '../layout/Table';
 import { Copyright } from '@mui/icons-material';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import DateAndTime from '../layout/DateAndTime';
+import randomColor from 'randomcolor';
 const Search = () => {
   const [resultsFromQuery, setResultsFromQuery] = useState(null);
+  const [consoleCollection,setConsoleCollection] = useState(null);
   const params = useParams();
   let query = params.query;
 
@@ -25,6 +27,7 @@ const Search = () => {
 
   useEffect(() => {
     getAllGamesFromQuery();
+    getPlatformGlobalSales();
   }, []);
 
   const getAllGamesFromQuery = async () => {
@@ -39,6 +42,45 @@ const Search = () => {
     }
   };
   console.log(resultsFromQuery);
+
+  const getPlatformGlobalSales = async () => {
+    try {
+      const res = await axios.get(
+        'https://localhost:7260/api/Games/byPlatform-globalsales'
+      );
+
+      // let data = dataByPlatformGlobalSales;
+      let data = res.data;
+      // console.log(dataByPlatformGlobalSales);
+      let obj = {};
+      for (let i = 0; i < data.length; i++) {
+        if (obj[data[i].platform]) {
+          obj[data[i].platform] += data[i].globalSales;
+        } else {
+          obj[data[i].platform] = data[i].globalSales;
+        }
+      }
+      setConsoleCollection(obj);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  let dataToBeDisplayed = [['Name', 'Sales', { role: 'style' }]];
+  const chartOptions = {
+    title: 'Global Game Sales Per Console in millions $',
+    width: '100%',
+    height: '100%',
+    bar: { groupWidth: '95%' },
+    legend: { position: 'none' },
+    margin: 'auto',
+  };
+  if (consoleCollection) {
+    for (const key in consoleCollection) {
+      let color = randomColor();
+      let x = [key, consoleCollection[key], color];
+      dataToBeDisplayed.push(x);
+    }
+  }
 
   // for chart
   const data = [
@@ -97,14 +139,12 @@ const Search = () => {
                   height: 500,
                 }}
               >
-                {/* {' '}
-                <Chart
-                  chartType='BarChart'
-                  width='100%'
-                  height='400px'
-                  data={data}
-                  options={options}
-                />{' '} */}
+                {' '}
+                <GoogleCharts
+                  chartOptions={chartOptions}
+                  dataToBeDisplayed={dataToBeDisplayed}
+                  chartType='ColumnChart'
+                />{' '}
               </Paper>
             </Grid>
             {/* Recent Deposits */}
@@ -133,7 +173,7 @@ const Search = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Table data={resultsFromQuery} />
+                <MuiTable data={resultsFromQuery} />
               </Paper>
             </Grid>
           </Grid>

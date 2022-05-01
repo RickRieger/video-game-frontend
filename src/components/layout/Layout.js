@@ -14,7 +14,7 @@ import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MainListItems from './MainListItems';
-import SecondaryListItems from './SecondaryListItems';
+
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { useNavigate } from 'react-router-dom';
@@ -221,7 +221,7 @@ function Layout({ children }) {
           <List component='nav'>
             <MainListItems />
             <Divider sx={{ my: 1 }} />
-            <SecondaryListItems />
+            
           </List>
         </Drawer>
         <Box
