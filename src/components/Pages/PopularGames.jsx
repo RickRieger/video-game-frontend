@@ -17,7 +17,7 @@ import rankData from '../../dataByRank';
 const PopularGames = () => {
   const [data, setData] = useState([['Game', 'Rank', { role: 'style' }]]);
   const [responseFromServer, setResponseFromServer] = useState(null);
-  if (data.length > 1) {
+  if (responseFromServer) {
     responseFromServer.map((item) => {
       let color = randomColor();
       const ranks = [item.name, item.rank, color];
@@ -27,14 +27,14 @@ const PopularGames = () => {
 
   useEffect(() => {
     getGamesByRank();
-  }, [data]);
+  }, []);
 
   const getGamesByRank = async () => {
     try {
       let res = await axios.get(
         'https://localhost:7260/api/Games/getGamesByRank'
       );
-      let x = res.data;
+      console.log(res.data)
       setResponseFromServer(res.data);
     } catch (e) {
       console.log(e.message);

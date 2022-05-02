@@ -46,7 +46,7 @@ const Home = () => {
         'https://localhost:7260/api/Games/byPlatform-globalsales'
       );
 
-      let data = dataByPlatformGlobalSales;
+      // let data = dataByPlatformGlobalSales;
       let data = res.data;
       // console.log(dataByPlatformGlobalSales);
       let obj = {};
