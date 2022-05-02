@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import Grid from '@mui/material/Grid';
 import { Paper } from '@mui/material';
-import GoogleCharts from '../layout/GoogleCharts';
+import Chart from 'react-google-charts';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
@@ -13,38 +13,43 @@ import { Copyright } from '@mui/icons-material';
 import DateAndTime from '../layout/DateAndTime';
 import axios from 'axios';
 import randomColor from 'randomcolor';
+import rankData from '../../dataByRank';
 const PopularGames = () => {
-  const [data, setData] = useState( [['Platform', 'Sales', { role: 'style' }]]);
-
-useEffect(() => {
-  getGamesByRank()
-
-  
-}, [data]);
-  const getGamesByRank=async()=> {
-    try {
-      let res = await axios.get('https://localhost:7260/api/Games/getGamesByRank')
-      let x = res.data
-      await Promise.all(x.map(async(item)=>{
-        let color = randomColor()
-        const ranks =[item.platform, item.globalSales, color]
-        data.push(ranks)
-        console.log(ranks)
-      }))
-    
-      console.log('LOOK OVER HERE',data)
-    } catch (e) {
-      console.log(e.message)
-    }
+  const [data, setData] = useState([['Game', 'Rank', { role: 'style' }]]);
+  const [responseFromServer, setResponseFromServer] = useState(null);
+  if (data.length > 1) {
+    responseFromServer.map((item) => {
+      let color = randomColor();
+      const ranks = [item.name, item.rank, color];
+      data.push(ranks);
+    });
   }
 
-  const options = {
-    chart: {
-      title: 'Most Popular Game Rank',
-     
-    },
+  useEffect(() => {
+    getGamesByRank();
+  }, [data]);
+
+  const getGamesByRank = async () => {
+    try {
+      let res = await axios.get(
+        'https://localhost:7260/api/Games/getGamesByRank'
+      );
+      let x = res.data;
+      setResponseFromServer(res.data);
+    } catch (e) {
+      console.log(e.message);
+    }
   };
-  
+
+  const chartOptions = {
+    title: 'Most Popular Games by Rank',
+    width: '100%',
+    height: '100%',
+    bar: { groupWidth: '95%' },
+    legend: { position: 'none' },
+    margin: 'auto',
+  };
+
   return (
     <Layout>
       <Box
@@ -73,14 +78,15 @@ useEffect(() => {
                   height: 500,
                 }}
               >
-                {' '}
-                <GoogleCharts
-                  chartType='ColumnChart'
-                  width='100%'
-                  height='400px'
-                  data={data}
-                  options={options}
-                />{' '}
+                {data.length > 1 ? (
+                  <Chart
+                    chartType={'ColumnChart'}
+                    data={data}
+                    options={chartOptions}
+                  />
+                ) : (
+                  ''
+                )}
               </Paper>
             </Grid>
             {/* Recent Deposits */}
@@ -109,7 +115,7 @@ useEffect(() => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                {/* <MuiTable data={data} /> */}
+                <MuiTable data={rankData} />
               </Paper>
             </Grid>
           </Grid>

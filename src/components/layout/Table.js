@@ -24,7 +24,12 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-const MuiTable = ({ data, setChartOptions, setDataToBeDisplayed }) => {
+const MuiTable = ({
+  data,
+  setChartOptions,
+  setDataToBeDisplayed,
+  handleOnClick,
+}) => {
   let rows = [];
   if (data) {
     data.forEach((element, index) => {
@@ -47,11 +52,11 @@ const MuiTable = ({ data, setChartOptions, setDataToBeDisplayed }) => {
       console.log(res.data);
       let data = res.data;
       let x = [['Game', 'GloabalSalesByConsole', { role: 'style' }]];
-      
+
       for (let i = 0; i < data.length; i++) {
-        let color = randomColor()
-        let y = [data[i].platform, data[i].globalSales, color]
-        x.push(y)
+        let color = randomColor();
+        let y = [data[i].platform, data[i].globalSales, color];
+        x.push(y);
       }
       // setChartOptions();
       setDataToBeDisplayed(x);
@@ -82,7 +87,7 @@ const MuiTable = ({ data, setChartOptions, setDataToBeDisplayed }) => {
               <TableCell align='right'>
                 <VideogameAssetIcon
                   style={{ color: 'blue', fontSize: 'large' }}
-                  onClick={() => handleUpdateChart(row.title)}
+                  onClick={() => handleOnClick(row.title)}
                 />
               </TableCell>
             </TableRow>

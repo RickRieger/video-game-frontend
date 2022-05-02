@@ -24,7 +24,7 @@ const Home = () => {
   // Column Google Chart Starter Code
   let dataToBeDisplayed = [['Name', 'Sales', { role: 'style' }]];
   const chartOptions = {
-    title: 'Global Game Sales Per Console in millions $',
+    title: 'Global Game Sales Per Console in millions Since 19851',
     width: '100%',
     height: '100%',
     bar: { groupWidth: '95%' },
@@ -46,7 +46,7 @@ const Home = () => {
         'https://localhost:7260/api/Games/byPlatform-globalsales'
       );
 
-      // let data = dataByPlatformGlobalSales;
+      let data = dataByPlatformGlobalSales;
       let data = res.data;
       // console.log(dataByPlatformGlobalSales);
       let obj = {};

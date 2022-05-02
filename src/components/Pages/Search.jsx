@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import DateAndTime from '../layout/DateAndTime';
 import randomColor from 'randomcolor';
 const Search = () => {
+  const [searchByNameResults, setSearchByNameResults] = useState(null);
   const [resultsFromQuery, setResultsFromQuery] = useState(null);
   const [consoleCollection, setConsoleCollection] = useState(null);
   const [chartOptions, setChartOptions] = useState({
@@ -28,15 +29,12 @@ const Search = () => {
   let [dataToBeDisplayed, setDataToBeDisplayed] = useState([
     ['Name', 'Sales', { role: 'style' }],
   ]);
-
   const params = useParams();
   let query = params.query;
 
-   if (query) {
-   query = query.replace(' ', '%20');
+  if (query) {
+    query = query.replace(' ', '%20');
   }
-  console.log(query);
-
   useEffect(() => {
     getAllGamesFromQuery();
     getPlatformGlobalSales();
@@ -83,35 +81,31 @@ const Search = () => {
     }
   }
 
-  // for chart
-  const data = [
-    [
-      'Element',
-      'Density',
-      { role: 'style' },
-      {
-        sourceColumn: 0,
-        role: 'annotation',
-        type: 'string',
-        calc: 'stringify',
-      },
-    ],
-    ['Copper', 8.94, '#b87333', null],
-    ['Silver', 10.49, 'silver', null],
-    ['Gold', 19.3, 'gold', null],
-    ['Platinum', 21.45, 'color: #e5e4e2', null],
-  ];
-  const options = {
-    chart: {
-      title: 'Density of Precious Metals, in g/cm^3',
-      width: 600,
-      height: 400,
-      bar: { groupWidth: '95%' },
-      legend: { position: 'none' },
-    },
+  const handleSearchByName = async (nameOfGame) => {
+    try {
+      const res = await axios.get(
+        `https://localhost:7260/api/Games/getGameStats/${nameOfGame}`
+      );
+      console.log(res.data);
+      let data = res.data;
+      let x = [['Game', 'GloabalSalesByConsole', { role: 'style' }]];
+
+      for (let i = 0; i < data.length; i++) {
+        let color = randomColor();
+        let y = [data[i].platform, data[i].globalSales, color];
+        x.push(y);
+      }
+      // setChartOptions();
+      setDataToBeDisplayed(x);
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
-  // RENDER STUFF!
+  const handleOnClickEvent = (data) => {
+    console.log(data);
+  };
+
   return (
     <Layout>
       <Box
@@ -176,8 +170,7 @@ const Search = () => {
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                 <MuiTable
                   data={resultsFromQuery}
-                  setChartOptions={setChartOptions}
-                  setDataToBeDisplayed={setDataToBeDisplayed}
+                  handleOnClickEvent={handleOnClickEvent}
                 />
               </Paper>
             </Grid>
