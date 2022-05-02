@@ -6,7 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
-import randomColor from 'randomColor';
+import randomColor from 'randomcolor';
+import axios from 'axios';
 // Generates Order of Data for the table
 function createData(
   id,
@@ -41,21 +42,19 @@ const MuiTable = ({ data, setChartOptions, setDataToBeDisplayed }) => {
   const handleUpdateChart = async (nameOfGame) => {
     try {
       const res = await axios.get(
-        `https://localhost:7260/api/Games/byNameOfGame${nameOfGame}`
+        `https://localhost:7260/api/Games/getGameStats/${nameOfGame}`
       );
       console.log(res.data);
       let data = res.data;
-      let x = ['Game', 'GloabalSalesByConsole', { role: 'style' }];
-      let obj = {};
+      let x = [['Game', 'GloabalSalesByConsole', { role: 'style' }]];
+      
       for (let i = 0; i < data.length; i++) {
-        if (obj[data[i].platform]) {
-          obj[data[i].platform] += data[i].globalSales;
-        } else {
-          obj[data[i].platform] = data[i].globalSales;
-        }
+        let color = randomColor()
+        let y = [data[i].platform, data[i].globalSales, color]
+        x.push(y)
       }
-      setChartOptions();
-      setDataToBeDisplayed();
+      // setChartOptions();
+      setDataToBeDisplayed(x);
     } catch (e) {
       console.log(e.message);
     }

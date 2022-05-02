@@ -32,15 +32,15 @@ const Search = () => {
   const params = useParams();
   let query = params.query;
 
-  if (query) {
-    query = query.replace(' ', '%20');
+   if (query) {
+   query = query.replace(' ', '%20');
   }
   console.log(query);
 
   useEffect(() => {
     getAllGamesFromQuery();
     getPlatformGlobalSales();
-  }, []);
+  }, [dataToBeDisplayed]);
 
   const getAllGamesFromQuery = async () => {
     try {
